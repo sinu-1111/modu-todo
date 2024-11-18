@@ -1,14 +1,23 @@
-import axios from "axios";
-import { TodoService } from "./Todo.service";
+// src/api/services/index.ts
+import axios from 'axios';
 
-const instance = axios.create({
-  baseURL: "https://krjtzipafygiuaerygnu.supabase.co/rest/v1/todo",
-  headers: {
-    apikey:
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyanR6aXBhZnlnaXVhZXJ5Z251Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1MTAzMzUsImV4cCI6MjA0NjA4NjMzNX0.OfvmxqrNizqanrBNA3iG6oHdC-pj8kt0ARkzyM_2aiw",
-    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyanR6aXBhZnlnaXVhZXJ5Z251Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1MTAzMzUsImV4cCI6MjA0NjA4NjMzNX0.OfvmxqrNizqanrBNA3iG6oHdC-pj8kt0ARkzyM_2aiw`,
-    "Content-Type": "application/json",
-  },
-});
+const API_URL = 'https://your-supabase-url.com'; // Supabase API URL
 
-export const todoService = new TodoService(instance);
+export const fetchTodos = async () => {
+  const response = await axios.get(`${API_URL}/todos`);
+  return response.data;
+};
+
+export const addTodo = async (title: string) => {
+  const response = await axios.post(`${API_URL}/todos`, { title });
+  return response.data;
+};
+
+export const updateTodo = async (id: string, completed: boolean) => {
+  const response = await axios.patch(`${API_URL}/todos/${id}`, { completed });
+  return response.data;
+};
+
+export const deleteTodo = async (id: string) => {
+  await axios.delete(`${API_URL}/todos/${id}`);
+};

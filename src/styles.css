@@ -1,0 +1,13 @@
+
+.todo-item.completed {
+    text-decoration: line-through;
+  }
+  
+  .todo-item:hover .delete-button {
+    display: inline;
+  }
+  
+  .delete-button {
+    display: none;
+  }
+  
