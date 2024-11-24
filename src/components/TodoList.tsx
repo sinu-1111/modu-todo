@@ -1,29 +1,49 @@
-// src/components/TodoList.tsx
-import React from 'react';
-import { ITodo } from '../types/ITodo';
+import React, { useState } from 'react';
+import { ITodo } from '../types';
 
-interface TodoListProps {
-  todos: ITodo[];
-  toggleTodo: (id: string) => void;
-  deleteTodo: (id: string) => void;
-}
+const TodoList = () => {
+    const [todos, setTodos] = useState<ITodo[]>([]);
 
-const TodoList: React.FC<TodoListProps> = ({ todos, toggleTodo, deleteTodo }) => {
-  return (
-    <ul>
-      {todos.map((todo) => (
-        <li key={todo.id}>
-          <span
-            onClick={() => toggleTodo(todo.id)}
-            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-          >
-            {todo.title}
-          </span>
-          <button onClick={() => deleteTodo(todo.id)}>삭제</button>
-        </li>
-      ))}
-    </ul>
-  );
+    const addTodo = (title: string) => {
+        const newTodo = {
+            id: generateId(),
+            title,
+            completed: false,
+            createdAt: new Date().toISOString(),
+        };
+        setTodos([...todos, newTodo]);
+    };
+
+    const toggleCompleted = (id: string) => {
+        setTodos(todos.map(todo =>
+            todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        ));
+    };
+
+    const deleteTodo = (id: string) => {
+        setTodos(todos.filter(todo => todo.id !== id));
+    };
+
+    const editTodo = (id: string, newTitle: string) => {
+        setTodos(todos.map(todo =>
+            todo.id === id ? { ...todo, title: newTitle, updatedAt: new Date().toISOString() } : todo
+        ));
+    };
+
+    return (
+        <div>
+            {todos.map(todo => (
+                <div key={todo.id}>
+                    <span>{todo.title}</span>
+                    <button onClick={() => toggleCompleted(todo.id)}>
+                        {todo.completed ? 'Undo' : 'Complete'}
+                    </button>
+                    <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+                </div>
+            ))}
+        </div>
+    );
 };
 
 export default TodoList;
+
