@@ -1,13 +1,13 @@
 import React from 'react';
-import TodoApp from './components/TodoApp';  // TodoApp 컴포넌트 임포트
+import Home from './pages/Home';
 
-const App: React.FC = () => {
+const App = () => {
   return (
-    <div className="App">
-      <TodoApp />
+    <div>
+      <h1>Todo List</h1>
+      <Home />
     </div>
   );
 };
 
 export default App;
-

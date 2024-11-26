@@ -1,44 +1,37 @@
 import React from 'react';
-import { ITodo } from '../types/ITodo';  // ITodo 타입 임포트
+import { useTodos, useUpdateTodo, useDeleteTodo } from '../api/mutations/todo';
 
-interface TodoListProps {
-  todos: ITodo[];
-  toggleTodo: (id: number) => void;
-  deleteTodo: (id: number) => void;
-  setFilter: React.Dispatch<React.SetStateAction<'all' | 'completed' | 'active'>>;
-  deleteCompletedTodos: () => void;
-}
+const TodoList = () => {
+  const { data: todos } = useTodos();
+  const { mutate: updateTodo } = useUpdateTodo();
+  const { mutate: deleteTodo } = useDeleteTodo();
 
-const TodoList: React.FC<TodoListProps> = ({
-  todos,
-  toggleTodo,
-  deleteTodo,
-  setFilter,
-  deleteCompletedTodos,
-}) => {
+  const toggleCompletion = (id: string, completed: boolean) => {
+    updateTodo({ id, completed: !completed });
+  };
+
+  const handleDelete = (id: string) => {
+    deleteTodo(id);
+  };
+
   return (
     <div>
-      <div>
-        <button onClick={() => setFilter('all')}>All</button>
-        <button onClick={() => setFilter('active')}>Active</button>
-        <button onClick={() => setFilter('completed')}>Completed</button>
-      </div>
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo(todo.id)}
-            />
-            {todo.text}
-            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <button onClick={deleteCompletedTodos}>Delete Completed</button>
+      {todos?.map(todo => (
+        <div key={todo.id}>
+          <input 
+            type="checkbox" 
+            checked={todo.completed} 
+            onChange={() => toggleCompletion(todo.id, todo.completed)} 
+          />
+          <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+            {todo.title}
+          </span>
+          <button onClick={() => handleDelete(todo.id)}>삭제</button>
+        </div>
+      ))}
     </div>
   );
 };
 
 export default TodoList;
+

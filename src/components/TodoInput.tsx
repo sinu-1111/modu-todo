@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
+import { useAddTodo } from '../api/mutations/todo';
 
-interface TodoInputProps {
-  addTodo: (text: string) => void; // 부모로부터 받은 addTodo 함수
-}
+const TodoInput = () => {
+  const [title, setTitle] = useState('');
+  const { mutate } = useAddTodo();
 
-const TodoInput: React.FC<TodoInputProps> = ({ addTodo }) => {
-  const [inputText, setInputText] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (inputText.trim()) {
-      addTodo(inputText);
-      setInputText('');
+  const handleAddTodo = () => {
+    if (title.trim()) {
+      mutate(title);
+      setTitle('');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        placeholder="Add a new task"
+    <div>
+      <input 
+        type="text" 
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)} 
+        placeholder="할일을 입력하세요" 
       />
-      <button type="submit">Add Todo</button>
-    </form>
+      <button onClick={handleAddTodo}>추가</button>
+    </div>
   );
 };
 

@@ -1,32 +1,36 @@
 import React, { useState } from 'react';
-import TodoInput from './TodoInput';       // TodoInput 컴포넌트 임포트
-import TodoList from './TodoList';         // TodoList 컴포넌트 임포트
-import { ITodo } from '../types/ITodo';    // ITodo 타입 임포트
+import TodoInput from './TodoInput';
+import TodoList from './TodoList';
+import { ITodo } from '../types/ITodo';
 
 const TodoApp: React.FC = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [filter, setFilter] = useState<'all' | 'completed' | 'active'>('all');
 
-  const addTodo = (text: string) => {
-    const newTodo: ITodo = { id: Date.now(), text, completed: false };
-    setTodos([...todos, newTodo]);
+  const addTodo = (title: string) => {
+    const newTodo: ITodo = {
+      id: String(Date.now()), // 간단히 시간을 이용해 ID 생성
+      title,
+      completed: false,
+      createdAt: new Date().toISOString(),
+    };
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
   };
 
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
+  const toggleTodo = (id: string) => {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const deleteTodo = (id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
 
-  const deleteCompletedTodos = () => {
-    setTodos(todos.filter((todo) => !todo.completed));
-  };
+  // 남은 Todo 갯수 계산
+  const remainingTodos = todos.filter((todo) => !todo.completed).length;
 
   const filteredTodos =
     filter === 'all'
@@ -38,12 +42,18 @@ const TodoApp: React.FC = () => {
   return (
     <div>
       <TodoInput addTodo={addTodo} />
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
+      <div className="todo-footer">
+        <span>{remainingTodos} 남은 할 일</span>
+        <button onClick={() => setTodos(todos.filter(todo => !todo.completed))} disabled={remainingTodos === todos.length}>
+          완료된 할 일 모두 삭제
+        </button>
+      </div>
       <TodoList
         todos={filteredTodos}
         toggleTodo={toggleTodo}
         deleteTodo={deleteTodo}
         setFilter={setFilter}
-        deleteCompletedTodos={deleteCompletedTodos}
       />
     </div>
   );

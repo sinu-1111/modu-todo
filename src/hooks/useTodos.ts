@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../services';
+import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../api/services';
 
 export const useTodos = () => {
   const queryClient = useQueryClient();

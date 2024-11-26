@@ -1,5 +1,5 @@
 import { AxiosInstance } from "axios";
-import { pathToUrl } from "../utils/util";
+import { pathToUrl } from "../../utils/util";
 
 const TODO_ROUTES = {
   GET_TODO: "/todo",
