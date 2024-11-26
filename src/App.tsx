@@ -1,21 +1,14 @@
-import React from "react";
-import "./App.css";
-import { getTodoList } from "./api/services/todo";
+import React from 'react';
+import TodoList from './components/TodoList';
+import '/src/style.css';
 
-function App() {
-  const [data, setData] = React.useState<ITodo[]>();
-  React.useEffect(() => {
-    const fetchData = async () => {
-      await getTodoList().then((data) => {
-        setData(data);
-      });
-    };
-
-    fetchData();
-  }, []);
-  console.log(data);
-
-  return <></>;
-}
+const App: React.FC = () => {
+  return (
+    <div className="App">
+      <h1>Todo List</h1>
+      <TodoList />
+    </div>
+  );
+};
 
 export default App;
