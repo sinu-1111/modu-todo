@@ -1,23 +1,24 @@
 import { AxiosInstance } from "axios";
-import { pathToUrl } from "../../utils/util";
+import { convertPathToUrl } from "../../utils/util";
 
-const TODO_ROUTES = {
-  GET_TODO: "/todo",
-  GET_TODO_DETAILS: "/todo/:todoId",
+// TODO API 경로 상수
+const API_ENDPOINTS = {
+  GET_TODO_LIST: "/todo",
+  GET_TODO_DETAIL: "/todo/:todoId",
   CREATE_TODO: "/todo",
   UPDATE_TODO: "/todo/:todoId",
   DELETE_TODO: "/todo/:todoId",
 } as const;
 
-export class TodoService {
-  constructor(private _ajax: AxiosInstance) {}
+export class TodoApiService {
+  constructor(private axiosInstance: AxiosInstance) {}
 
-  /** 할일 목록 조회 */
-  async getTodoList(req: getTodosRequest) {
-    const { path, params, body } = req;
+  /** 할일 목록 가져오기 */
+  async fetchTodoList(request: GetTodosRequest) {
+    const { path, params, body } = request;
 
-    const { data } = await this._ajax.get<getTodosResponse>(
-      pathToUrl(TODO_ROUTES.GET_TODO, path),
+    const { data } = await this.axiosInstance.get<GetTodosResponse>(
+      convertPathToUrl(API_ENDPOINTS.GET_TODO_LIST, path),
       {
         params,
         data: body,
@@ -27,25 +28,25 @@ export class TodoService {
     return data;
   }
 
-  /** 할일 상세 조회 */
-  async getTodoDetail(req: getTodoDetailRequest) {
-    const { path } = req;
-    const supaPath = {
+  /** 할일 상세 정보 가져오기 */
+  async fetchTodoDetail(request: GetTodoDetailRequest) {
+    const { path } = request;
+    const todoPath = {
       todoId: `eq.${path.todoId}`,
     };
 
-    const { data } = await this._ajax.get<getTodoDetailResponse>(
-      pathToUrl(TODO_ROUTES.GET_TODO_DETAILS, supaPath)
+    const { data } = await this.axiosInstance.get<GetTodoDetailResponse>(
+      convertPathToUrl(API_ENDPOINTS.GET_TODO_DETAIL, todoPath)
     );
 
     return data;
   }
 
-  /** 할일 목록 추가 */
-  async createTodoList(req: createTodoRequest) {
-    const { path, params, body } = req;
-    const { data } = await this._ajax.post<createTodoResponse>(
-      pathToUrl(TODO_ROUTES.CREATE_TODO, path),
+  /** 할일 생성 */
+  async createTodoItem(request: CreateTodoRequest) {
+    const { path, params, body } = request;
+    const { data } = await this.axiosInstance.post<CreateTodoResponse>(
+      convertPathToUrl(API_ENDPOINTS.CREATE_TODO, path),
       body,
       {
         params,
@@ -55,28 +56,30 @@ export class TodoService {
     return data;
   }
 
-  /** 할일 목록 수정 */
-  async updateTodoList(req: updateTodoRequest) {
-    const { path, body } = req;
-    const supaPath = {
+  /** 할일 수정 */
+  async modifyTodoItem(request: UpdateTodoRequest) {
+    const { path, body } = request;
+    const todoPath = {
       todoId: `eq.${path.todoId}`,
     };
-    const { data } = await this._ajax.patch<updateTodoResponse>(
-      pathToUrl(TODO_ROUTES.UPDATE_TODO, supaPath),
+
+    const { data } = await this.axiosInstance.patch<UpdateTodoResponse>(
+      convertPathToUrl(API_ENDPOINTS.UPDATE_TODO, todoPath),
       body
     );
 
     return data;
   }
 
-  /** 할일 목록 삭제 */
-  async deleteTodoList(req: deleteTodoRequest) {
-    const { path, params, body } = req;
-    const supaPath = {
+  /** 할일 삭제 */
+  async removeTodoItem(request: DeleteTodoRequest) {
+    const { path, params, body } = request;
+    const todoPath = {
       todoId: `eq.${path.todoId}`,
     };
-    const { data } = await this._ajax.delete<deleteTodoResponse>(
-      pathToUrl(TODO_ROUTES.DELETE_TODO, supaPath),
+
+    const { data } = await this.axiosInstance.delete<DeleteTodoResponse>(
+      convertPathToUrl(API_ENDPOINTS.DELETE_TODO, todoPath),
       {
         params,
         data: body,

@@ -1,42 +1,16 @@
-import { createClient } from '@supabase/supabase-js';
+import axios from "axios";
+import { TodoApiService } from "./Todo.service";
 
-const supabase = createClient('https://your-project-id.supabase.co', 'your-public-anon-key');
+// Axios 인스턴스 생성
+const apiClient = axios.create({
+  baseURL: "https://krjtzipafygiuaerygnu.supabase.co/rest/v1/todo",
+  headers: {
+    apikey:
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyanR6aXBhZnlnaXVhZXJ5Z251Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1MTAzMzUsImV4cCI6MjA0NjA4NjMzNX0.OfvmxqrNizqanrBNA3iG6oHdC-pj8kt0ARkzyM_2aiw",
+    Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyanR6aXBhZnlnaXVhZXJ5Z251Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1MTAzMzUsImV4cCI6MjA0NjA4NjMzNX0.OfvmxqrNizqanrBNA3iG6oHdC-pj8kt0ARkzyM_2aiw`,
+    "Content-Type": "application/json",
+  },
+});
 
-export const getTodos = async () => {
-  const { data, error } = await supabase
-    .from('todos')
-    .select('*')
-    .order('createdAt', { ascending: false });
-
-  if (error) throw error;
-  return data;
-};
-
-export const addTodo = async (title: string) => {
-  const { data, error } = await supabase
-    .from('todos')
-    .insert([{ title, completed: false }]);
-
-  if (error) throw error;
-  return data;
-};
-
-export const updateTodo = async (id: string, completed: boolean) => {
-  const { data, error } = await supabase
-    .from('todos')
-    .update({ completed })
-    .match({ id });
-
-  if (error) throw error;
-  return data;
-};
-
-export const deleteTodo = async (id: string) => {
-  const { data, error } = await supabase
-    .from('todos')
-    .delete()
-    .match({ id });
-
-  if (error) throw error;
-  return data;
-};
+// TodoApiService 인스턴스 생성
+export const todoApiService = new TodoApiService(apiClient);

@@ -1,24 +1,24 @@
 {
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",  // TypeScript 빌드 정보 파일 위치
+    "target": "ES2022",  // 컴파일 대상 ECMAScript 버전
+    "lib": ["ES2023"],  // 사용할 라이브러리 설정
+    "module": "ESNext",  // 모듈 시스템
+    "skipLibCheck": true,  // 라이브러리 체크 건너뛰기
 
-    /* Bundler mode */
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
+    /* 번들러 모드 설정 */
+    "moduleResolution": "Bundler",  // 모듈 해석 전략
+    "allowImportingTsExtensions": true,  // TypeScript 확장자를 가져올 수 있도록 허용
+    "isolatedModules": true,  // 각 파일을 독립적인 모듈로 처리
+    "moduleDetection": "force",  // 강제로 모듈로 처리
+    "noEmit": true,  // 출력 파일 생성 안함
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    /* 린팅 규칙 */
+    "strict": true,  // 엄격한 타입 검사
+    "noUnusedLocals": true,  // 사용되지 않는 로컬 변수 금지
+    "noUnusedParameters": true,  // 사용되지 않는 파라미터 금지
+    "noFallthroughCasesInSwitch": true,  // switch 문에서 case가 떨어지는 것 방지
+    "noUncheckedSideEffectImports": true  // 부작용이 있는 import에 대한 경고
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts"]  // 포함할 파일
 }

@@ -1,36 +1,32 @@
-export type Json =
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+
+// JSON 타입 정의
+export type JSONValue =
   | string
   | number
   | boolean
   | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+  | { [key: string]: JSONValue | undefined }
+  | JSONValue[];
 
-export type Database = {
+// 데이터베이스 구조 정의
+export type DBSchema = {
   graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
+    Tables: Record<string, never>;
+    Views: Record<string, never>;
     Functions: {
       graphql: {
         Args: {
           operationName?: string;
           query?: string;
-          variables?: Json;
-          extensions?: Json;
+          variables?: JSONValue;
+          extensions?: JSONValue;
         };
-        Returns: Json;
+        Returns: JSONValue;
       };
     };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
   public: {
     Tables: {
@@ -56,117 +52,111 @@ export type Database = {
           title?: string;
           updatedAt?: string | null;
         };
-        Relationships: [];
+        Relationships: never[];
       };
     };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 };
 
-type PublicSchema = Database[Extract<keyof Database, "public">];
+// public 스키마 타입 추출
+type PublicSchema = DBSchema[Extract<keyof DBSchema, "public">];
 
-export type Tables<
-  PublicTableNameOrOptions extends
+// 테이블 관련 타입 추출
+export type TableData<
+  TableOption extends
     | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    | { schema: keyof DBSchema },
+  TableName extends TableOption extends { schema: keyof DBSchema }
+    ? keyof (DBSchema[TableOption["schema"]]["Tables"] & DBSchema[TableOption["schema"]]["Views"])
     : never = never
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = TableOption extends { schema: keyof DBSchema }
+  ? (DBSchema[TableOption["schema"]]["Tables"] & DBSchema[TableOption["schema"]]["Views"])[TableName] extends {
       Row: infer R;
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-      PublicSchema["Views"])
-  ? (PublicSchema["Tables"] &
-      PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : TableOption extends keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+  ? (PublicSchema["Tables"] & PublicSchema["Views"])[TableOption] extends {
       Row: infer R;
     }
     ? R
     : never
   : never;
 
-export type TablesInsert<
-  PublicTableNameOrOptions extends
+// 테이블에 삽입되는 데이터 타입 추출
+export type TableInsert<
+  TableOption extends
     | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    | { schema: keyof DBSchema },
+  TableName extends TableOption extends { schema: keyof DBSchema }
+    ? keyof DBSchema[TableOption["schema"]]["Tables"]
     : never = never
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = TableOption extends { schema: keyof DBSchema }
+  ? DBSchema[TableOption["schema"]]["Tables"][TableName] extends {
       Insert: infer I;
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : TableOption extends keyof PublicSchema["Tables"]
+  ? PublicSchema["Tables"][TableOption] extends {
       Insert: infer I;
     }
     ? I
     : never
   : never;
 
-export type TablesUpdate<
-  PublicTableNameOrOptions extends
+// 테이블에 대한 업데이트 타입 추출
+export type TableUpdate<
+  TableOption extends
     | keyof PublicSchema["Tables"]
-    | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    | { schema: keyof DBSchema },
+  TableName extends TableOption extends { schema: keyof DBSchema }
+    ? keyof DBSchema[TableOption["schema"]]["Tables"]
     : never = never
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = TableOption extends { schema: keyof DBSchema }
+  ? DBSchema[TableOption["schema"]]["Tables"][TableName] extends {
       Update: infer U;
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : TableOption extends keyof PublicSchema["Tables"]
+  ? PublicSchema["Tables"][TableOption] extends {
       Update: infer U;
     }
     ? U
     : never
   : never;
 
-export type Enums<
-  PublicEnumNameOrOptions extends
+// Enum 관련 타입 추출
+export type EnumData<
+  EnumOption extends
     | keyof PublicSchema["Enums"]
-    | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    | { schema: keyof DBSchema },
+  EnumName extends EnumOption extends { schema: keyof DBSchema }
+    ? keyof DBSchema[EnumOption["schema"]]["Enums"]
     : never = never
-> = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-  ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+> = EnumOption extends { schema: keyof DBSchema }
+  ? DBSchema[EnumOption["schema"]]["Enums"][EnumName]
+  : EnumOption extends keyof PublicSchema["Enums"]
+  ? PublicSchema["Enums"][EnumOption]
   : never;
 
-export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
+// 복합 타입 관련 타입 추출
+export type CompositeTypeData<
+  CompositeOption extends
     | keyof PublicSchema["CompositeTypes"]
-    | { schema: keyof Database },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database;
+    | { schema: keyof DBSchema },
+  CompositeTypeName extends CompositeOption extends {
+    schema: keyof DBSchema;
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DBSchema[CompositeOption["schema"]]["CompositeTypes"]
     : never = never
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
-  ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+> = CompositeOption extends { schema: keyof DBSchema }
+  ? DBSchema[CompositeOption["schema"]]["CompositeTypes"][CompositeTypeName]
+  : CompositeOption extends keyof PublicSchema["CompositeTypes"]
+  ? PublicSchema["CompositeTypes"][CompositeOption]
   : never;

@@ -1,10 +1,13 @@
-// src/main.tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App'; // App 컴포넌트를 가져옵니다.
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { App } from "./App"; // 컴포넌트 이름 및 임포트 방식을 바꿔보았습니다
+import "./styles.css";  // styles.css로 파일 이름을 변경
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+const rootElement = document.getElementById("root") as HTMLElement;
+const root = createRoot(rootElement);
+
+root.render(
+  <StrictMode>
     <App />
-  </React.StrictMode>
+  </StrictMode>
 );

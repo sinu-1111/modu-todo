@@ -1,96 +1,79 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-type getTodosRequestPath = {};
 
-type getTodosRequestParams = {};
+// 할일 목록 조회와 관련된 타입들
+interface TodoListQueryParams {
+  /** 쿼리 파라미터 */
+  body?: Record<string, unknown>;
+  params?: Record<string, unknown>;
+  path?: Record<string, unknown>;
+}
 
-type getTodosRequestBody = {};
+interface TodoListResponse {
+  totalItems: number;
+  previousPage: string | null;
+  nextPage: string | null;
+  todos: ITodo[];
+}
 
-/** 할일 목록 조회 요청 */
-type getTodosRequest = {
-  body?: getTodosRequestBody;
-  params?: getTodosRequestParams;
-  path?: getTodosRequestPath;
-};
-
-/** 할일 목록 조회 응답 */
-type getTodosResponse = {
-  count: number;
-  prev: string | null;
-  next: string | null;
-  results: ITodo[];
-};
-
-type getTodoDetailRequestPath = {
+// 할일 상세 조회 관련 타입들
+interface TodoDetailPathParams {
   todoId: string;
-};
+}
 
-type getTodoDetailRequestParams = {};
+interface TodoDetailQueryParams {
+  /** 쿼리 파라미터 */
+}
 
-type getTodoDetailRequestBody = {};
+interface TodoDetailBody {}
 
-/** 할일 상세 조회 요청 */
-type getTodoDetailRequest = {
-  body?: getTodoDetailRequestBody;
-  params?: getTodoDetailRequestParams;
-  path: getTodoDetailRequestPath;
-};
+interface TodoDetailRequest {
+  body?: TodoDetailBody;
+  params?: TodoDetailQueryParams;
+  path: TodoDetailPathParams;
+}
 
-/** 할일 상세 조회 응답 */
-type getTodoDetailResponse = ITodo;
+type TodoDetailResponse = ITodo;
 
-type createTodoRequestPath = {};
-
-type createTodoRequestParams = {};
-
-type createTodoRequestBody = {
+// 할일 생성 관련 타입들
+interface TodoCreateBody {
   title: string;
-};
+}
 
-/** 할일 생성 요청 */
-type createTodoRequest = {
-  body: createTodoRequestBody;
-  params?: createTodoRequestParams;
-  path?: createTodoRequestPath;
-};
+interface TodoCreateRequest {
+  body: TodoCreateBody;
+  params?: Record<string, unknown>;
+  path?: Record<string, unknown>;
+}
 
-/** 할일 생성 응답 */
-type createTodoResponse = ITodo;
+type TodoCreateResponse = ITodo;
 
-type updateTodoRequestPath = {
+// 할일 수정 관련 타입들
+interface TodoUpdatePathParams {
   todoId: string;
-};
+}
 
-type updateTodoRequestParams = {};
-
-type updateTodoRequestBody = Omit<{
+interface TodoUpdateBody {
   title: string;
   completed: boolean;
-}>;
+}
 
-/** 할일 수정 요청 */
-type updateTodoRequest = {
-  body: updateTodoRequestBody;
-  params?: updateTodoRequestParams;
-  path: updateTodoRequestPath;
-};
+interface TodoUpdateRequest {
+  body: TodoUpdateBody;
+  params?: Record<string, unknown>;
+  path: TodoUpdatePathParams;
+}
 
-/** 할일 수정 응답 */
-type updateTodoResponse = void;
+type TodoUpdateResponse = void;
 
-type deleteTodoRequestPath = {
+// 할일 삭제 관련 타입들
+interface TodoDeletePathParams {
   todoId: string;
-};
+}
 
-type deleteTodoRequestParams = {};
+interface TodoDeleteRequest {
+  body?: Record<string, unknown>;
+  params?: Record<string, unknown>;
+  path: TodoDeletePathParams;
+}
 
-type deleteTodoRequestBody = {};
-
-/** 할일 삭제 요청 */
-type deleteTodoRequest = {
-  body?: deleteTodoRequestBody;
-  params?: deleteTodoRequestParams;
-  path: deleteTodoRequestPath;
-};
-
-/** 할일 삭제 응답 */
-type deleteTodoResponse = void;
+type TodoDeleteResponse = void;

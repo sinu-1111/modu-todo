@@ -1,14 +1,36 @@
 {
-  "dependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-query": "^3.35.0",
-    "axios": "^1.3.0",
-    "@supabase/supabase-js": "^2.8.0"
+  "name": "modo-todo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+
+  "scripts": {
+    "dev": "vite", 
+    "build": "tsc -b && vite build",  // Build with TypeScript and Vite
+    "lint": "eslint .",  // Lint the entire project
+    "preview": "vite preview"  // Preview the built application
   },
+
+  "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",  // Supabase client
+    "@tanstack/react-query": "^5.59.16",  // React Query for data fetching
+    "axios": "^1.7.7",  // Axios for HTTP requests
+    "path-to-regexp": "^8.2.0",  // Path-to-regexp for routing
+    "react": "^18.3.1",  // React library
+    "react-dom": "^18.3.1"  // React DOM rendering
+  },
+
   "devDependencies": {
-    "vite": "^4.0.0",
-    "typescript": "^5.0.0",
-    "react-scripts": "^5.0.0"
+    "@eslint/js": "^9.13.0",  // ESLint JS config
+    "@types/react": "^18.3.12",  // React types for TypeScript
+    "@types/react-dom": "^18.3.1",  // React DOM types for TypeScript
+    "@vitejs/plugin-react-swc": "^3.5.0",  // Vite plugin for React with SWC support
+    "eslint": "^9.13.0",  // ESLint for linting code
+    "eslint-plugin-react-hooks": "^5.0.0",  // ESLint plugin for React hooks
+    "eslint-plugin-react-refresh": "^0.4.14",  // ESLint plugin for React Fast Refresh
+    "globals": "^15.11.0",  // Global variable definitions
+    "typescript": "~5.6.2",  // TypeScript compiler
+    "typescript-eslint": "^8.11.0",  // TypeScript ESLint plugin
+    "vite": "^5.4.10"  // Vite build tool
   }
 }

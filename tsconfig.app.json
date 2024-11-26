@@ -1,26 +1,36 @@
 {
-  "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+  "name": "task-manager-app",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
 
-    /* Bundler mode */
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+  "scripts": {
+    "dev": "vite", 
+    "build": "tsc -b && vite build",  // TypeScript 및 Vite로 빌드
+    "lint": "eslint .",  // 프로젝트 전체 린팅
+    "preview": "vite preview"  // 빌드한 애플리케이션 미리 보기
   },
-  "include": ["src"]
+
+  "dependencies": {
+    "@supabase/supabase-js": "^2.46.1",  // Supabase 클라이언트 라이브러리
+    "@tanstack/react-query": "^5.59.16",  // 데이터 페칭을 위한 React Query
+    "axios": "^1.7.7",  // HTTP 요청을 위한 Axios
+    "path-to-regexp": "^8.2.0",  // 라우팅을 위한 Path-to-regexp
+    "react": "^18.3.1",  // React 라이브러리
+    "react-dom": "^18.3.1"  // React DOM 렌더링
+  },
+
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",  // ESLint JS 설정
+    "@types/react": "^18.3.12",  // React의 TypeScript 타입 정의
+    "@types/react-dom": "^18.3.1",  // React DOM의 TypeScript 타입 정의
+    "@vitejs/plugin-react-swc": "^3.5.0",  // SWC 지원을 위한 Vite 플러그인
+    "eslint": "^9.13.0",  // 코드 린팅을 위한 ESLint
+    "eslint-plugin-react-hooks": "^5.0.0",  // React Hooks용 ESLint 플러그인
+    "eslint-plugin-react-refresh": "^0.4.14",  // React Fast Refresh를 위한 ESLint 플러그인
+    "globals": "^15.11.0",  // 전역 변수 정의
+    "typescript": "~5.6.2",  // TypeScript 컴파일러
+    "typescript-eslint": "^8.11.0",  // TypeScript ESLint 플러그인
+    "vite": "^5.4.10"  // Vite 빌드 도구
+  }
 }
