@@ -1,39 +1,21 @@
-
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../api/services';
+import { fetchTodos, addTodo, updateTodo, deleteTodo } from '../services';
 
 export const useTodos = () => {
   const queryClient = useQueryClient();
 
-  // Todos 불러오기
-  const { data: todos = [], isLoading } = useQuery('todos', fetchTodos);
+  const { data: todos, isLoading, isError } = useQuery('todos', fetchTodos);
 
-  // Todo 추가하기
-  const { mutate: createTodo } = useMutation(addTodo, {
+  const addTodoMutation = useMutation(addTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries('todos');
     },
   });
 
-  // Todo 완료 상태 토글하기
-  const { mutate: toggleTodoStatus } = useMutation(updateTodo, {
+  const updateTodoMutation = useMutation(updateTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries('todos');
     },
   });
 
-  // Todo 삭제하기
-  const { mutate: removeTodo } = useMutation(deleteTodo, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('todos');
-    },
-  });
-
-  return {
-    todos,
-    isLoading,
-    createTodo,
-    toggleTodoStatus,
-    removeTodo,
-  };
-};
+  const deleteTodoMutation = useMutation(deleteTodo, {

@@ -1,30 +1,30 @@
-// src/components/TodoInput.tsx
 import React, { useState } from 'react';
 
 interface TodoInputProps {
-  addTodo: (title: string) => void;
+  addTodo: (text: string) => void; // 부모로부터 받은 addTodo 함수
 }
 
 const TodoInput: React.FC<TodoInputProps> = ({ addTodo }) => {
-  const [title, setTitle] = useState('');
+  const [inputText, setInputText] = useState('');
 
-  const handleAddClick = () => {
-    if (title.trim()) {
-      addTodo(title);
-      setTitle(''); // 입력창 초기화
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (inputText.trim()) {
+      addTodo(inputText);
+      setInputText('');
     }
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="할 일을 입력하세요"
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        placeholder="Add a new task"
       />
-      <button onClick={handleAddClick}>추가</button>
-    </div>
+      <button type="submit">Add Todo</button>
+    </form>
   );
 };
 

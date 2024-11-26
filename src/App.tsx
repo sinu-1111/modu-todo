@@ -1,14 +1,13 @@
 import React from 'react';
-import TodoList from './components/TodoList';
-import '/src/style.css';
+import TodoApp from './components/TodoApp';  // TodoApp 컴포넌트 임포트
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>Todo List</h1>
-      <TodoList />
+      <TodoApp />
     </div>
   );
 };
 
 export default App;
+
